@@ -11151,4 +11151,17 @@ body {
 .flex-header {
   display: flex;
   justify-content: space-between;
+}
+
+.bouton-editer {
+  background-color: #4a355b;
+  color: #e2d6e6;
+  padding: 15px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  text-decoration: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s, transform 0.2s;
 }/*# sourceMappingURL=styles.css.map */

@@ -2,17 +2,28 @@
 
 
 {% block contenu %}
-<p> Liste de nos cinq récents services enregistrés. </p>
-        <ul>
-            {% for s in services %}
-            <li>Titre : {{s.titre}}</li>
-            {# Mettre nom catgorie #}
-            <li>Catégorie : {{s.categorie}}</li> 
-            
-            <li>localisation: {{s.localisation}}</li>
-            <li>Page de détails<a href="/service?titre={{s.titre}}">{{s.titre}}</a></li>
-            {% endfor %}
-        </ul>
-
+<h3> Liste de nos cinq récents services enregistrés. </h3>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Photo du service</th>
+            <th>Titre</th>
+            <th>Catégorie</th>
+            <th>Localisation</th>
+            <th>Détails</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for s in services %}
+        <tr>
+            <td><img src="/static/images/gratisography.jpg" alt="Photo du service" width="200" ></td>
+            <td>{{ s.titre }}</td>  
+            <td>{{ s.categorie }}</td>
+            <td>{{ s.localisation }}</td>
+            <td><a href="/service?id={{ s.id_service }}">Voir la page</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 
 {% endblock %}

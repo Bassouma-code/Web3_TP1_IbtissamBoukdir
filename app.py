@@ -47,25 +47,28 @@ def ajout():
     return render_template('ajout.jinja', service=s)
 
 
-@app.route('/service')
+@app.route('/service', methods=['GET', 'POST'])
 def service():
     """Page qui permet d'afficher toutes les informations d'un service"""
     identifiant = request.args.get('id', type=int)
-    s = {}
+    service = {}
 
     # TODO : faire try except et mettre dans logger
 
     with bd.creer_connexion() as conn:
         with conn.get_curseur() as curseur:
             curseur.execute(
-                'SELECT * FROM services where id_service=%(id)s',
-                {
-                    'id_service': identifiant
-                }
+                '''
+            SELECT s.*, c.nom_categorie AS categorie_nom
+            FROM services s
+            LEFT JOIN categories c ON s.id_categorie = c.id_categorie
+            WHERE s.id_service = %(id_service)s
+            ''',
+            {'id_service': identifiant}
             )
-            s = curseur.fetchone()
+            service = curseur.fetchone()
 
-    return render_template('service.jinja', titre_page="Détails d'un service")
+    return render_template('service.jinja', titre_page="Détails d'un service", service=service)
 
 
 
