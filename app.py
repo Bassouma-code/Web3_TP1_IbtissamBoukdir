@@ -22,7 +22,7 @@ def index():
         with conn.get_curseur() as curseur:
             curseur.execute('SELECT * FROM services WHERE actif = 1 ORDER BY date_creation DESC LIMIT 5')
             services = curseur.fetchall()
-    return render_template('index.jinja', titre_page= "Accueil", titre="Accueil",services=services)
+    return render_template('index.jinja', titre_page= "Accueil",services=services)
     
 
 

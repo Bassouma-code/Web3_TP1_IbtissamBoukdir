@@ -487,7 +487,7 @@ progress {
   display: none !important;
 }
 
-.lead, header p {
+.lead {
   font-size: 1.25rem;
   font-weight: 300;
 }
@@ -536,14 +536,14 @@ progress {
     font-size: 3.5rem;
   }
 }
-.display-5, header h1 {
+.display-5 {
   font-size: calc(1.425rem + 2.1vw);
   font-weight: 300;
   line-height: 1.2;
 }
 
 @media (min-width: 1200px) {
-  .display-5, header h1 {
+  .display-5 {
     font-size: 3rem;
   }
 }
@@ -629,7 +629,7 @@ progress {
   color: #6c757d;
 }
 
-.container, body,
+.container,
 .container-fluid,
 .container-xxl,
 .container-xl,
@@ -646,27 +646,27 @@ progress {
 }
 
 @media (min-width: 576px) {
-  .container-sm, .container, body {
+  .container-sm, .container {
     max-width: 540px;
   }
 }
 @media (min-width: 768px) {
-  .container-md, .container-sm, .container, body {
+  .container-md, .container-sm, .container {
     max-width: 720px;
   }
 }
 @media (min-width: 992px) {
-  .container-lg, .container-md, .container-sm, .container, body {
+  .container-lg, .container-md, .container-sm, .container {
     max-width: 960px;
   }
 }
 @media (min-width: 1200px) {
-  .container-xl, .container-lg, .container-md, .container-sm, .container, body {
+  .container-xl, .container-lg, .container-md, .container-sm, .container {
     max-width: 1140px;
   }
 }
 @media (min-width: 1400px) {
-  .container-xxl, .container-xl, .container-lg, .container-md, .container-sm, .container, body {
+  .container-xxl, .container-xl, .container-lg, .container-md, .container-sm, .container {
     max-width: 1320px;
   }
 }
@@ -3911,7 +3911,7 @@ textarea.form-control-lg {
   padding: var(--bs-navbar-padding-y) var(--bs-navbar-padding-x);
 }
 
-.navbar > .container, .navbar > body,
+.navbar > .container,
 .navbar > .container-fluid,
 .navbar > .container-sm,
 .navbar > .container-md,
@@ -8117,7 +8117,7 @@ textarea.form-control-lg {
   padding-top: 1.5rem !important;
 }
 
-.pt-5, header {
+.pt-5 {
   padding-top: 3rem !important;
 }
 
@@ -8157,7 +8157,7 @@ textarea.form-control-lg {
   padding-bottom: 0.5rem !important;
 }
 
-.pb-3, header {
+.pb-3 {
   padding-bottom: 1rem !important;
 }
 
@@ -8165,7 +8165,7 @@ textarea.form-control-lg {
   padding-bottom: 1.5rem !important;
 }
 
-.pb-5, nav, main, footer {
+.pb-5 {
   padding-bottom: 3rem !important;
 }
 
@@ -11135,4 +11135,20 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
-/*# sourceMappingURL=styles.css.map */
+
+.container {
+  max-width: 1200px;
+}
+
+body {
+  margin: 0 auto;
+}
+
+.arriere-plan, nav {
+  background-color: #e2d6e6;
+}
+
+.flex-header {
+  display: flex;
+  justify-content: space-between;
+}/*# sourceMappingURL=styles.css.map */

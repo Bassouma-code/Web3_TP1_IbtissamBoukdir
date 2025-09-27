@@ -7,39 +7,50 @@
     <title>{% if titre_page %} {{titre_page}} | {% endif %} DigitalSwap</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description"
+        content="Application web d’échange de services numériques entre particuliers:création de sites, graphisme, cours en ligne, montage vidéo et plus.">
     <link rel="icon" href="https://www.cegepgarneau.ca/favicon.ico" />
     <link rel="stylesheet" href="/static/css/styles.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
 </head>
 
 <body>
-    <header>
-        <h1> 
-        <a href="/templates/index.jinja">DigitalSwap</a>
-         </h1>
-    </header>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Menu</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/">Accueil</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/ajout">Ajouter/modifier un service</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/service">Détails d'un service</a>
-                    </li>
-                   
-                </ul>
+    <div class="arriere-plan">
+        <header class="flex-header container  pb-3 pt-3">
+            <div class="logo-titre">
+                <a href="/">
+                    <img src="/static/images/logo.png" alt="logo du site" width="100">
+                </a>
+                <span class="visually-hidden">(Accueil)</span>
+                <h1>DigitalSwap</h1>
             </div>
-        </div>
-    </nav>
+            <nav class="navbar navbar-expand-lg ">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="#">Menu</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="/">Accueil</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/ajout">Ajouter/modifier un service</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/service">Détails d'un service</a>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+    </div>
+
     {# <nav>
         <ul>
             {% for page in routes %}
@@ -49,8 +60,8 @@
             {% endfor %}
         </ul>
     </nav> #}
-    <main>
-        <h2>{{titre}} | DigitalSwap </h2>
+    <main class="container  pb-3 pt-3">
+        <h2>{%if titre_page%} {{titre_page}} | {%endif%} DigitalSwap </h2>
 
         {% block contenu %}
 
@@ -58,11 +69,15 @@
 
     </main>
 
-    <footer>
-        <p> Ibtissam Boukdir</p>
-        <p>&copy; 2025 DigitalSwap. Tous droits réservés.</p>
-    </footer>
+    <div class="arriere-plan">
+        <footer class="container  pb-3 pt-3">
+            <p> Ibtissam Boukdir</p>
+            <p>&copy; 2025 DigitalSwap. Tous droits réservés.</p>
+        </footer>
+    </div>
 
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

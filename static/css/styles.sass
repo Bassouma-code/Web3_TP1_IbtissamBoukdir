@@ -1,19 +1,42 @@
 // Les fichiers sAss n'ont pas de point-virgule ni d'accolade
 // Vous pouvez utiliser des .scss OU .sass à votre choix
 
+$couleur-primaire: #4a355b 
+$couleur-secondaire: #e2d6e6
+
 @import "bootstrap"
 
+.container
+    max-width: 1200px
+
 body
-    @extend .container
+    margin: 0 auto
 
 header
-    @extend .pt-5, .pb-3
+    // @extend .container
+    // @extend .pt-5, .pb-3
 
-    h1
-        @extend .display-5
+    // h1
+    //     @extend .display-5
 
-    p
-        @extend .lead
+    // p
+    //     @extend .lead
 
-nav, main, footer
-    @extend .pb-5
+.arriere-plan, nav
+    background-color: $couleur-secondaire
+
+// nav,
+ header, main, footer
+
+    padding: 30px 
+    margin: 20px
+
+
+.flex-header
+    display: flex
+    justify-content: space-between
+ 
+
+
+
+  
