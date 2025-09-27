@@ -1,0 +1,68 @@
+{# Voici la template de base, dans un beau commentaire qui ne se retrouvera pas dans le HTML :-) #}
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr">
+
+<head>
+    <title>{% if titre_page %} {{titre_page}} | {% endif %} DigitalSwap</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://www.cegepgarneau.ca/favicon.ico" />
+    <link rel="stylesheet" href="/static/css/styles.css" />
+</head>
+
+<body>
+    <header>
+        <h1> 
+        <a href="/templates/index.jinja">DigitalSwap</a>
+         </h1>
+    </header>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Menu</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/">Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/ajout">Ajouter/modifier un service</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/service">Détails d'un service</a>
+                    </li>
+                   
+                </ul>
+            </div>
+        </div>
+    </nav>
+    {# <nav>
+        <ul>
+            {% for page in routes %}
+            <li>
+                <a href="{{page.route}}">{{page.nom}}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </nav> #}
+    <main>
+        <h2>{{titre}} | DigitalSwap </h2>
+
+        {% block contenu %}
+
+        {% endblock %}
+
+    </main>
+
+    <footer>
+        <p> Ibtissam Boukdir</p>
+        <p>&copy; 2025 DigitalSwap. Tous droits réservés.</p>
+    </footer>
+
+</body>
+
+</html>

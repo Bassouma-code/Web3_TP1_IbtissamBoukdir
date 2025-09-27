@@ -1,0 +1,18 @@
+{% extends "base.jinja" %}
+
+
+{% block contenu %}
+<p> Liste de nos cinq récents services enregistrés. </p>
+        <ul>
+            {% for s in services %}
+            <li>Titre : {{s.titre}}</li>
+            {# Mettre nom catgorie #}
+            <li>Catégorie : {{s.categorie}}</li> 
+            
+            <li>localisation: {{s.localisation}}</li>
+            <li>Page de détails<a href="/service?titre={{s.titre}}">{{s.titre}}</a></li>
+            {% endfor %}
+        </ul>
+
+
+{% endblock %}
