@@ -1,6 +1,50 @@
 {% extends "base.jinja" %}
 
 {% block contenu %}
-<p>Page service</p>
+<table  class="table table-striped table-bordered table-hover">
+    <tbody>
+        <tr class="align-middle py-2">
+            <th>Titre</th>
+            <td>{{service.titre}}</td>
+        </tr>
+        <tr class="align-middle py-2">
+            <th>Catégorie</th>
+            <td>{{service.categorie_nom}}</td>
+        </tr>
+        <tr class="align-middle py-2">
+            <th>Localisation</th>
+            <td>{{service.localisation}}</td>
+        </tr>
+        <tr class="align-middle py-2">
+            <th>Description</th>
+            <td>{{service.description}}</td>
+        </tr>
+        <tr class="align-middle py-2">
+            <th>Coût</th>
+            <td>{{service.cout}}</td>
+        </tr>
+        <tr class="align-middle py-2">
+            <th>Date d'ajout</th>
+            <td>{{service.date_creation}}</td>
+        </tr>
+        <tr class="align-middle py-2">
+            <th>Statut</th>
+            <td>
+                {% if service.actif==1 %}
+                Actif
+                {% else %}
+                Inactif
+                {% endif %}
+            </td>
+        </tr>
+
+    </tbody>
+
+
+</table>
+
+<a class="bouton-editer" href="/service">
+    Éditer ce service
+</a>
 
 {% endblock %}
