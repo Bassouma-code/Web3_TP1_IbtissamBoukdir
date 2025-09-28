@@ -23,8 +23,12 @@ def index():
 
     with bd.creer_connexion() as conn:
         with conn.get_curseur() as curseur:
-            curseur.execute('SELECT * FROM services WHERE actif = 1 ORDER BY date_creation DESC LIMIT 5')
+            # curseur.execute('SELECT * FROM services WHERE actif = 1 ORDER BY date_creation DESC LIMIT 5')
+            curseur.execute('SELECT s.* , c.nom_categorie AS categorie_nom FROM services s LEFT JOIN categories c ON s.id_categorie = c.id_categorie WHERE actif = 1 ORDER BY date_creation DESC LIMIT 5')
+             
             services = curseur.fetchall()
+            
+
     return render_template('index.jinja', titre_page= "Accueil",services=services)
     
 
@@ -35,7 +39,7 @@ def afficher_service():
     """Page qui permet d'afficher toutes les informations d'un service"""
     identifiant = request.args.get('id', type=int)
     service = {}
-
+    nom
     # TODO : faire try except et mettre dans logger
 
     with bd.creer_connexion() as conn:
@@ -50,6 +54,7 @@ def afficher_service():
             {'id_service': identifiant}
             )
             service = curseur.fetchone()
+          
 
     return render_template('service.jinja', titre_page="Détails d'un service", service=service)
 
@@ -79,7 +84,7 @@ def confirmer():
 
     message="Le service a été modifié avec succès!"
     
-    return render_template ("confirmation.jinja", message=message)
+    return render_template ("confirmation.jinja",titre_page="Confirmation d'ajout de service", message=message)
 
 
 @app.route('/ajout', methods=["GET", "POST"])
@@ -135,7 +140,7 @@ def ajout():
                     }
                 )
         return redirect("/confirmation", code=303)
-    return render_template('ajout.jinja', categories=categories)
+    return render_template('ajout.jinja',titre_page="Ajout/modification d'un service", categories=categories)
 
 
 
