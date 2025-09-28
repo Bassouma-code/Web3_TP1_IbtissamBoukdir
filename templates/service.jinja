@@ -1,10 +1,11 @@
 {% extends "base.jinja" %}
 
 {% block contenu %}
+
 <table  class="table table-striped table-bordered table-hover">
     <tbody>
         <tr class="align-middle py-2">
-            <th>Titre</th>
+            <th class="w-25">Titre</th>
             <td>{{service.titre}}</td>
         </tr>
         <tr class="align-middle py-2">
@@ -21,11 +22,12 @@
         </tr>
         <tr class="align-middle py-2">
             <th>Coût</th>
-            <td>{{service.cout}}</td>
+            <td> {{"{:.2f}".format(service.cout) }} $</td>
         </tr>
         <tr class="align-middle py-2">
             <th>Date d'ajout</th>
-            <td>{{service.date_creation}}</td>
+            <td>{{service.date_creation.strftime("%d/%m/%Y") }}</td>
+     
         </tr>
         <tr class="align-middle py-2">
             <th>Statut</th>

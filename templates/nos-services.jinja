@@ -1,5 +1,14 @@
 {% extends "base.jinja" %}
 {% block contenu %}
+<div class="mx-auto" style="max-width: 600px;">
 
+    <ul class="list-group list-group-flush">
+        {% for service in services %}
+        <li class="list-group-item px-3 py-2 text-center">
+            {{ service.titre }}
+        </li>
+        {% endfor %}
+    </ul>
 
+</div>
 {% endblock %}

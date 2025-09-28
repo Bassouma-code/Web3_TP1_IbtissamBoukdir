@@ -39,7 +39,7 @@ def afficher_service():
     """Page qui permet d'afficher toutes les informations d'un service"""
     identifiant = request.args.get('id', type=int)
     service = {}
-    nom
+
     # TODO : faire try except et mettre dans logger
 
     with bd.creer_connexion() as conn:
@@ -160,7 +160,17 @@ def ajout():
     #         s = curseur.fetchone()
 
     # return render_template('ajout.jinja', categories=categories, service=s)
+@app.route('/nos-services')
+def lister_service():
+    """Affiche la liste de tous les services proposés par les utilisateurs du site"""
+    services= []
+    with bd.creer_connexion() as conn:
+        with conn.get_curseur() as curseur:
+                            
+            curseur.execute("SELECT titre FROM services")
+            services = curseur.fetchall()
     
+    return render_template('nos-services.jinja',titre_page="Nos services", services=services)
 
 if __name__ == "__main__":
     app.run(debug=True)
