@@ -3,7 +3,7 @@
 
 {% block contenu %}
 <h3> Liste de nos cinq récents services enregistrés. </h3>
-<table class="table table-striped">
+<table class="table table-striped ">
     <thead>
         <tr>
             <th>Photo du service</th>
@@ -15,12 +15,12 @@
     </thead>
     <tbody>
         {% for s in services %}
-        <tr>
+        <tr class="text-center align-middle">
             <td><img src="/static/images/gratisography.jpg" alt="Photo du service" width="200" ></td>
             <td>{{ s.titre }}</td>  
             <td>{{ s.categorie_nom }}</td>
             <td>{{ s.localisation }}</td>
-            <td><a href="/service?id={{ s.id_service }}">Voir la page</a></td>
+            <td><a href="/service?id={{ s.id_service }}" class="bouton w-100 w-md-auto">Voir la page</a></td>
         </tr>
         {% endfor %}
     </tbody>

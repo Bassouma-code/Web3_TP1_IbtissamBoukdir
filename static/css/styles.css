@@ -11164,4 +11164,12 @@ body {
   cursor: pointer;
   font-size: 16px;
   transition: background-color 0.3s, transform 0.2s;
+}
+
+.bouton {
+  background-color: #e2d6e6;
+  text-decoration: none;
+  color: #4a355b;
+  padding: 10px;
+  border-radius: 10px;
 }/*# sourceMappingURL=styles.css.map */
