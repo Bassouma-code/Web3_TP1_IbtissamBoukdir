@@ -2,10 +2,15 @@
 Exercice de page de détails
 """
 
+import re
 from flask import Flask, render_template, request, redirect
 from datetime import datetime
-
 import bd
+
+regex_texte_court = re.compile(r"^[A-Za-zÀ-ÖØ-öø-ÿ\s]{1,50}$")
+regex_description=re.compile(r"^.{5,2000}$")
+regex_image=re.compile(r"^[A-Za-z0-9]{6,50}$")
+regex_monetaire=re.compile(r'^\d{1,3}(,\d{3})*([.,]\d{1,2})?$')
 
 app = Flask(__name__)
 
@@ -94,72 +99,119 @@ def ajout():
     categories =[]
     photo_service="images/gratisography.jpg"
 
+    erreur_titre = False
+    erreur_localisation = False
+    erreur_description = False
+    erreur_categorie = False
+    erreur_cout = False
+
+
+    classe_titre= ""
+    classe_localisation= ""
+    classe_description= ""
+    classe_categorie= ""
+    
+
     with bd.creer_connexion() as conn:
         with conn.get_curseur() as curseur:
             curseur.execute('SELECT nom_categorie FROM categories ORDER BY nom_categorie')
             for ligne in curseur.fetchall():
                 categories.append(ligne['nom_categorie'])
     
-
-    if  request.method == "POST":
-        nom=request.form.get("nom", default="nom du service")
-        localisation=request.form.get("localisation", default="localisation du service")
-        description=request.form.get("description", default="Pas de description fournie")
+    #Récupérer les valeurs des chamos du formulaire
+    if  request.method == 'POST':
+        titre=request.form.get("titre", default="")
+        localisation=request.form.get("localisation", default="")
+        description=request.form.get("description", default="")
         cout=request.form.get("cout", type=float, default=0.0)
         st=request.form.get("statut")
         statut = bool(st)
         categorie=request.form.get("categorie", default="")
 
-        with bd.creer_connexion() as conn:
-            with conn.get_curseur() as curseur:
-                # Récupérer l'id_categorie correspondant au nom
-                curseur.execute(
-                "SELECT id_categorie FROM categories WHERE nom_categorie = %(nom)s",
-                    {'nom': categorie}
-                )
-                id_categorie = curseur.fetchone()['id_categorie']
-                #Ajout du nouveau service
-                date_creation = datetime.now()
-                curseur.execute(
-                        """
-                    INSERT INTO services
-                    (id_categorie, titre, description, localisation, date_creation, actif, cout, photo)
-                    VALUES
-                    (%(id_categorie)s, %(titre)s, %(description)s, %(localisation)s,
-                     %(date_creation)s, %(actif)s, %(cout)s, %(photo)s)
-                    """,
-                    {
-                        'id_categorie': id_categorie,
-                        'titre': nom,
-                        'description': description,
-                        'localisation': localisation,
-                        'date_creation': date_creation,
-                        'actif': statut,
-                        'cout': cout,
-                        'photo': photo_service,
-                    }
-                )
-        return redirect("/confirmation", code=303)
-    return render_template('ajout.jinja',titre_page="Ajout/modification d'un service", categories=categories)
+        #validation du titre
+        if not titre or not titre.strip() or not regex_texte_court.fullmatch(titre):
+            erreur_titre = True
+            classe_titre="is-invalid"
+        else:
+            classe_titre="is-valid"
+        
+        #validation de la localisation
+        if not  localisation or not localisation.strip() or not regex_texte_court.fullmatch(localisation):       
+            erreur_localisation = True
+            classe_localisation="is-invalid"
+        else: 
+            classe_localisation="is-valid"
+
+        #validation de la description
+        if not description or not description.strip() or not regex_description.fullmatch(description):
+            erreur_description= True
+            classe_description="is-invalid"
+        else:
+            classe_description="is-valid"
+
+        #validation de la catégorie
+        if not categorie :
+            erreur_categorie = True
+            classe_categorie="is-invalid"
+        else:
+            classe_categorie="is-valid"
+            
+
+        if not erreur_titre and not erreur_localisation and not erreur_description and not erreur_categorie:
+
+            with bd.creer_connexion() as conn:
+                with conn.get_curseur() as curseur:
+                    # Récupérer l'id_categorie correspondant au nom
+                    curseur.execute(
+                    "SELECT id_categorie FROM categories WHERE nom_categorie = %(nom)s",
+                        {'nom': categorie}
+                    )
+                    id_categorie = curseur.fetchone()['id_categorie']
+
+                    #Ajout du nouveau service
+                    date_creation = datetime.now()
+                    curseur.execute(
+                            """
+                        INSERT INTO services
+                        (id_categorie, titre, description, localisation, date_creation, actif, cout, photo)
+                        VALUES
+                        (%(id_categorie)s, %(titre)s, %(description)s, %(localisation)s,
+                        %(date_creation)s, %(actif)s, %(cout)s, %(photo)s)
+                        """,
+                        {
+                            'id_categorie': id_categorie,
+                            'titre': titre,
+                            'description': description,
+                            'localisation': localisation,
+                            'date_creation': date_creation,
+                            'actif': statut,
+                            'cout': cout,
+                            'photo': photo_service,
+                        }
+                    )
+                      
+            return redirect("/confirmation", code=303)
+        else:
+            return redirect("/erreur_ajout", code=404)
+   
+    return render_template('ajout.jinja',titre_page="Ajout/modification d'un service", 
+                           categories=categories, 
+                           classe_titre=classe_titre,
+                           classe_localisation=classe_localisation,
+                           classe_description=classe_description,
+                           classe_categorie=classe_categorie)
 
 
 
-    # identifiant = request.args.get('id', type=int)
-    # s = {}
+@app.route('/erreur_ajout')
+def erreur_ajout():
 
-    # TODO : faire try except et mettre dans logger
+    """Affiche un message d'erreur si un détail de service inexistant"""
+    message_erreur="Détails d’un service inexistant."
 
-    # with bd.creer_connexion() as conn:
-    #     with conn.get_curseur() as curseur:
-    #         curseur.execute(
-    #             'SELECT * FROM services where id_service=%(id)s',
-    #             {
-    #                 'id': identifiant
-    #             }
-    #         )
-    #         s = curseur.fetchone()
-
-    # return render_template('ajout.jinja', categories=categories, service=s)
+    #404
+    return render_template('base.jinja', message_erreur=message_erreur)
+  
 @app.route('/nos-services')
 def lister_service():
     """Affiche la liste de tous les services proposés par les utilisateurs du site"""

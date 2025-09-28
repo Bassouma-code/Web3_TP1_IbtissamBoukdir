@@ -2,16 +2,18 @@
 
 {% block contenu %}
 
-<form method="post" action="/ajout">
+<form method="post" action="/ajout" novalidate="novalidate">
 
     <fieldset class="border p-4 rounded">
         <legend class="mt-2 w-auto px-2">Détails du service</legend>
 
-        {# Nom #}
+        {# Titre #}
         <div class="mb-3 row">
-            <label for="nom" class="col-sm-2 col-form-label">Nom : </label>
+            <label for="titre" class="col-sm-2 col-form-label">Titre : </label>
             <div class="col-sm-6">
-                <input type="text" class="form-control" name="nom" id="nom" value="{{nom}}" />
+                <input type="text" name="titre" id="titre" value="{{titre}}" required
+                    class="{{ classe_titre }} form-control" />
+                <div class="invalid-feedback">Le titre est invalid</div>
             </div>
 
         </div>
@@ -20,8 +22,9 @@
         <div class="mb-3 row">
             <label for="localisation" class="col-sm-2 col-form-label">Localisation (ville) : </label>
             <div class="col-sm-6">
-                <input type="text" class="form-control" name="localisation" id="localisation"
-                    value="{{localisation}}" />
+                <input type="text" name="localisation" id="localisation" value="{{localisation}}"
+                    class="{{ classe_localisation }} form-control" required />
+                <div class="invalid-feedback">La localisation est invalide.</div>
             </div>
         </div>
 
@@ -30,8 +33,10 @@
         <div class="mb-3 row">
             <label for="description" class="col-sm-2 col-form-label">Description du service : </label>
             <div class="col-sm-6">
-                <textarea type="text" class="form-control" name="description" id="description" value="{{description}}"
-                    rows="10"></textarea>
+                <textarea type="text" name="description" id="description"
+                    rows="10" class="{{ classe_description }} form-control" required></textarea>
+                <div class="invalid-feedback">La description est invalide.</div>
+
             </div>
 
         </div>
@@ -48,28 +53,28 @@
         {# Statut #}
         <div class="form-check mb-3 row">
             <div class="col-sm-6">
-                <input class="form-check-input" type="checkbox" name="statut" id="statut">
+                <input class="form-check-input" type="checkbox" name="statut" id="statut" checked>
             </div>
 
-            <label class="form-check-label" for="statut">Statut: (cocher si votre service est actif)</label>
+            <label class="form-check-label" for="statut">Statut:</label>
         </div>
 
-        {# Description #}
+        {# Catégorie #}
         <div class="mb-3 row">
             <label for="categorie" class="form-label">Catégorie : </label>
             <div class="col-sm-6">
-               <select class="form-select" name="categorie" id="categorie" required>
-                <option value="" disabled selected>--Choisir une catégorie--</option>
-                {% for categ in categories %}
-                <option value="{{ categ }}"> {{categ}}</option>
-                {%endfor%}
-
-            </select>
+                <select name="categorie" id="categorie" class="{{ classe_categorie }} form-select" required>
+                    <option value="" disabled selected>--Choisir une catégorie--</option>
+                    {% for categ in categories %}
+                    <option value="{{ categ }}"> {{categ}}</option>
+                    {%endfor%}
+                </select>
+                <div class="invalid-feedback">La catégorie ne doit pas être vide.</div>
             </div>
-         
+
         </div>
 
-        <div d-flex justify-content-between>
+        <div class="d-flex justify-content-between">
             <button type="submit" class="btn btn-outline-primary">Soumettre</button>
             <button type="reset" class="btn btn-outline-primary">Réinitialiser</button>
         </div>
