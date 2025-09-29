@@ -1,0 +1,15 @@
+{% extends base.jinja %}
+
+{% block contenu %}
+
+  <h2>Choisissez votre langue</h2>
+    <form action="/choisir_langue" method="get">
+        <select name="lang">
+            <option value="fr_CA">Français (Canada)</option>
+            <option value="en_CA">English (Canada)</option>
+            <option value="en_US">English (US)</option>
+        </select>
+        <button type="submit">Valider</button>
+    </form>
+
+{% endblock %}

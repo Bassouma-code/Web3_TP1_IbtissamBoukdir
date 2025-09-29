@@ -5,7 +5,7 @@ Exercice de page de détails
 import re
 import html
 from datetime import datetime
-from flask import Flask, render_template, request, redirect, abort
+from flask import Flask, render_template, request, redirect, abort, make_response
 from jinja2 import select_autoescape
 import bleach
 from flask.logging import create_logger
@@ -20,17 +20,26 @@ regex_monetaire=re.compile(r'^\d{1,3}(,\d{3})*([.,]\d{1,2})?$')
 app = Flask(__name__)
 logger = create_logger(app)
 
+
+titres = {
+        'fr_CA': "Bienvenue sur votre site d’échange de services entre particuliers!",
+        'en_US': "Welcome to your community service exchange platform!",
+        'en_CA': "Welcome to your Canadian service exchange platform!",
+}
+
+
+# def get_locale():
+#     """Retourne la locale à utiliser"""
+
+#     return request.cookies.get('langue', 'fr_CA')
+
+
 #Caractères HTML
 app.jinja_env.autoescape = select_autoescape(['html', 'xml', 'jinja'])
 
 #Paramètres régionaux
 app.config["BABEL_DEFAULT_LOCALE"] = "fr_CA"
 locales = ["en_US", "en_CA", "fr_CA"]
-
-def get_locale():
-    """Retourne la locale à utiliser"""
-    return app.config["BABEL_DEFAULT_LOCALE"]
-
 
 
 services = []
@@ -40,6 +49,12 @@ def index():
     """Page d'index: Affiche les cinq derniers services de particuliers ajoutés selon la date d’ajout, 
     du plus récent au plus ancien."""
    
+    # Récupérer les préférences stockées dans le cookie langue
+    locale = request.cookies.get('langue', 'fr_CA')  
+    if not locale:
+        return redirect('/choisir_langue')
+
+    titre = titres.get(locale, titres['fr_CA'])
 
     # TODO : faire try except et mettre dans logger
 
@@ -51,9 +66,16 @@ def index():
             services = curseur.fetchall()
             
 
-    return render_template('index.jinja', titre_page= "Accueil",services=services)
+    return render_template('index.jinja', titre=titre, titre_page= "Accueil",services=services)
     
 
+@app.route('/choisir_langue', methods=['GET'])
+def choisir_langue():
+
+    langue = request.args.get("lang", default="fr_CA")
+    reponse = make_response(redirect('/'))
+    reponse.set_cookie('langue', langue)
+    return reponse
 
 
 @app.route('/service', methods=['GET', 'POST'])
