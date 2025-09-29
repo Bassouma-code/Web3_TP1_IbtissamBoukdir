@@ -3,9 +3,12 @@ Exercice de page de détails
 """
 
 import re
+import html
 from datetime import datetime
 from flask import Flask, render_template, request, redirect, abort
-from babel import numbers, dates
+from jinja2 import select_autoescape
+import bleach
+
 import bd
 
 regex_texte_court = re.compile(r"^[A-Za-zÀ-ÖØ-öø-ÿ\s]{1,50}$")
@@ -15,8 +18,11 @@ regex_monetaire=re.compile(r'^\d{1,3}(,\d{3})*([.,]\d{1,2})?$')
 
 app = Flask(__name__)
 
-app.config["BABEL_DEFAULT_LOCALE"] = "fr_CA"
+#Caractères HTML
+app.jinja_env.autoescape = select_autoescape(['html', 'xml', 'jinja'])
 
+#Paramètres régionaux
+app.config["BABEL_DEFAULT_LOCALE"] = "fr_CA"
 locales = ["en_US", "en_CA", "fr_CA"]
 
 def get_locale():
@@ -129,9 +135,9 @@ def ajout():
     
     #Récupérer les valeurs des chamos du formulaire
     if  request.method == 'POST':
-        titre=request.form.get("titre", default="")
-        localisation=request.form.get("localisation", default="")
-        description=request.form.get("description", default="")
+        titre=bleach.clean(request.form.get("titre", default=""))
+        localisation=bleach.clean(request.form.get("localisation", default=""))
+        description=bleach.clean(request.form.get("description", default=""))
         cout=request.form.get("cout", type=float, default=0.0)
         st=request.form.get("statut")
         statut = bool(st)
