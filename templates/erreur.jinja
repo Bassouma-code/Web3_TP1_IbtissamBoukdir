@@ -1,0 +1,9 @@
+{% extends "base.jinja" %}
+
+{% block contenu %}
+<div class="text-center mt-5">
+    <h1 class="display-4 text-danger">Erreur {{code}} - {{titre}}</h1>
+    <p class="lead">{{ message }}</p>
+    <a href="/" class="btn btn-primary mt-3">Retour à l’accueil</a>
+</div>
+{% endblock %}

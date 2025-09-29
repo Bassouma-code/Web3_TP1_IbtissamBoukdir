@@ -4,7 +4,7 @@ Exercice de page de détails
 
 import re
 from datetime import datetime
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, abort
 
 import bd
 
@@ -132,9 +132,11 @@ def ajout():
         #validation du titre
         # if not titre : 
         #     abort(400, "Paramètre 'titre' manquant")
+      
         if not titre or not titre.strip() or not regex_texte_court.fullmatch(titre):
             erreur_titre = True
             classe_titre="is-invalid"
+            
         else:
             classe_titre="is-valid"
         
@@ -159,7 +161,7 @@ def ajout():
         else:
             classe_categorie="is-valid"
             
-
+        # if erreur_titre or erreur_localisation or erreur_description or erreur_categorie : abort(400)
         if not erreur_titre and not erreur_localisation and not erreur_description and not erreur_categorie:
 
             with bd.creer_connexion() as conn:
@@ -195,7 +197,8 @@ def ajout():
                       
             return redirect("/confirmation", code=303)
         else:
-            return redirect("/erreur_ajout", code=404)
+            # return redirect("/erreur_ajout", code=404)
+            return abort(400)
    
     return render_template('ajout.jinja',titre_page="Ajout/modification d'un service", 
                            categories=categories, 
@@ -229,7 +232,7 @@ def lister_service():
 
 
 @app.errorhandler(400)
-def parametre_manquant():
+def parametre_manquant(erreur):
     """Pour les erreurs 400"""
     return render_template(
         'erreur.jinja',
@@ -241,7 +244,7 @@ def parametre_manquant():
 
 
 @app.errorhandler(404)
-def inexistant():
+def inexistant(erreur):
     """Fonction qui gère l'erreur 404"""
 
     return render_template(
@@ -253,7 +256,7 @@ def inexistant():
         ), 404
 
 @app.errorhandler(500)
-def erreur_interne():
+def erreur_interne(erreur):
     """Fonction qui gère l'erreur 500"""
     return render_template(
         "erreur.jinja",
