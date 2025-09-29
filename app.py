@@ -3,8 +3,9 @@ Exercice de page de détails
 """
 
 import re
-from flask import Flask, render_template, request, redirect
 from datetime import datetime
+from flask import Flask, render_template, request, redirect
+
 import bd
 
 regex_texte_court = re.compile(r"^[A-Za-zÀ-ÖØ-öø-ÿ\s]{1,50}$")
@@ -129,6 +130,8 @@ def ajout():
         categorie=request.form.get("categorie", default="")
 
         #validation du titre
+        # if not titre : 
+        #     abort(400, "Paramètre 'titre' manquant")
         if not titre or not titre.strip() or not regex_texte_court.fullmatch(titre):
             erreur_titre = True
             classe_titre="is-invalid"
@@ -223,6 +226,43 @@ def lister_service():
             services = curseur.fetchall()
     
     return render_template('nos-services.jinja',titre_page="Nos services", services=services)
+
+
+@app.errorhandler(400)
+def parametre_manquant():
+    """Pour les erreurs 400"""
+    return render_template(
+        'erreur.jinja',
+        titre_page="Oups ! Une erreur est survenue",
+        titre="Requête invalide",
+        code=400,
+        message="Un paramètre est manquant."
+    ), 400
+
+
+@app.errorhandler(404)
+def inexistant():
+    """Fonction qui gère l'erreur 404"""
+
+    return render_template(
+        "erreur.jinja",
+        titre_page="Oups ! Une erreur est survenue",
+        titre="Ressource introuvable", 
+        code=404,
+        message="Le service ou la page demandée n’existe pas ou n’est plus disponible.Veuillez vérifier l’adresse ou retourner à l’accueil."
+        ), 404
+
+@app.errorhandler(500)
+def erreur_interne():
+    """Fonction qui gère l'erreur 500"""
+    return render_template(
+        "erreur.jinja",
+        titre_page="Oups ! Une erreur est survenue",
+        titre="Problème technique",
+        code=500,
+        message="Nous rencontrons actuellement un problème technique lié à notre base de données. Veuillez réessayer plus tard. Si le problème persiste, contactez l’administrateur du site."
+        ), 500
+
 
 if __name__ == "__main__":
     app.run(debug=True)
