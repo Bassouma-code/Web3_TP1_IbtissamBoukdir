@@ -5,7 +5,7 @@ Exercice de page de détails
 import re
 from datetime import datetime
 from flask import Flask, render_template, request, redirect, abort
-
+from babel import numbers, dates
 import bd
 
 regex_texte_court = re.compile(r"^[A-Za-zÀ-ÖØ-öø-ÿ\s]{1,50}$")
@@ -14,6 +14,14 @@ regex_image=re.compile(r"^[A-Za-z0-9]{6,50}$")
 regex_monetaire=re.compile(r'^\d{1,3}(,\d{3})*([.,]\d{1,2})?$')
 
 app = Flask(__name__)
+
+app.config["BABEL_DEFAULT_LOCALE"] = "fr_CA"
+
+locales = ["en_US", "en_CA", "fr_CA"]
+
+def get_locale():
+    """Retourne la locale à utiliser"""
+    return app.config["BABEL_DEFAULT_LOCALE"]
 
 
 
