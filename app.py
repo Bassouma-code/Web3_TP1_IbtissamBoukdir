@@ -8,6 +8,7 @@ from datetime import datetime
 from flask import Flask, render_template, request, redirect, abort
 from jinja2 import select_autoescape
 import bleach
+from flask.logging import create_logger
 
 import bd
 
@@ -17,6 +18,7 @@ regex_image=re.compile(r"^[A-Za-z0-9]{6,50}$")
 regex_monetaire=re.compile(r'^\d{1,3}(,\d{3})*([.,]\d{1,2})?$')
 
 app = Flask(__name__)
+logger = create_logger(app)
 
 #Caractères HTML
 app.jinja_env.autoescape = select_autoescape(['html', 'xml', 'jinja'])
@@ -135,9 +137,9 @@ def ajout():
     
     #Récupérer les valeurs des chamos du formulaire
     if  request.method == 'POST':
-        titre=bleach.clean(request.form.get("titre", default=""))
-        localisation=bleach.clean(request.form.get("localisation", default=""))
-        description=bleach.clean(request.form.get("description", default=""))
+        titre=bleach.clean(request.form.get("titre", default="")).strip()
+        localisation=bleach.clean(request.form.get("localisation", default="")).strip()
+        description=bleach.clean(request.form.get("description", default="")).strip()
         cout=request.form.get("cout", type=float, default=0.0)
         st=request.form.get("statut")
         statut = bool(st)
@@ -147,7 +149,7 @@ def ajout():
         # if not titre : 
         #     abort(400, "Paramètre 'titre' manquant")
       
-        if not titre or not titre.strip() or not regex_texte_court.fullmatch(titre):
+        if not titre or not regex_texte_court.fullmatch(titre):
             erreur_titre = True
             classe_titre="is-invalid"
             
@@ -155,14 +157,14 @@ def ajout():
             classe_titre="is-valid"
         
         #validation de la localisation
-        if not  localisation or not localisation.strip() or not regex_texte_court.fullmatch(localisation):       
+        if not  localisation or not regex_texte_court.fullmatch(localisation):       
             erreur_localisation = True
             classe_localisation="is-invalid"
         else: 
             classe_localisation="is-valid"
 
         #validation de la description
-        if not description or not description.strip() or not regex_description.fullmatch(description):
+        if not description or not regex_description.fullmatch(description):
             erreur_description= True
             classe_description="is-invalid"
         else:
@@ -175,7 +177,6 @@ def ajout():
         else:
             classe_categorie="is-valid"
             
-        # if erreur_titre or erreur_localisation or erreur_description or erreur_categorie : abort(400)
         if not erreur_titre and not erreur_localisation and not erreur_description and not erreur_categorie:
 
             with bd.creer_connexion() as conn:
@@ -248,6 +249,9 @@ def lister_service():
 @app.errorhandler(400)
 def parametre_manquant(erreur):
     """Pour les erreurs 400"""
+
+    logger.exception(erreur)
+    
     return render_template(
         'erreur.jinja',
         titre_page="Oups ! Une erreur est survenue",
@@ -260,6 +264,7 @@ def parametre_manquant(erreur):
 @app.errorhandler(404)
 def inexistant(erreur):
     """Fonction qui gère l'erreur 404"""
+    logger.exception(erreur)
 
     return render_template(
         "erreur.jinja",
@@ -272,6 +277,8 @@ def inexistant(erreur):
 @app.errorhandler(500)
 def erreur_interne(erreur):
     """Fonction qui gère l'erreur 500"""
+
+    logger.exception(erreur)
     return render_template(
         "erreur.jinja",
         titre_page="Oups ! Une erreur est survenue",
