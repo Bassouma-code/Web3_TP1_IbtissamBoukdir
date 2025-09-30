@@ -164,7 +164,6 @@ def ajout():
         titre=bleach.clean(request.form.get("titre", default="")).strip()
         localisation=bleach.clean(request.form.get("localisation", default="")).strip()
         description=bleach.clean(request.form.get("description", default="")).strip()
-        # cout=request.form.get("cout", type=float, default=0.0)
         cout = request.form.get("cout", default="0").strip()
         st=request.form.get("statut")
         statut = bool(st)
@@ -253,7 +252,7 @@ def ajout():
                            description=description,
                            cout=cout,
                            statut=statut,
-                           categorie=categorie,                
+                           categorie=categorie, 
                            classe_titre=classe_titre,
                            classe_localisation=classe_localisation,
                            classe_description=classe_description,
@@ -273,11 +272,16 @@ def ajout():
 def modifier():
     """Page qui permet de modifier un service"""
 
-    identifiant = request.args.get('id', type=int)
  
+    try:
+        identifiant = request.args.get('id', type=int)
+        if identifiant is None:
+            raise ValueError("ID manquant ou invalide")
+    except Exception:
+        return abort(400)
+    
     service = {}
 
-    # TODO : faire try except et mettre dans logger
 
     with bd.creer_connexion() as conn:
         with conn.get_curseur() as curseur:
@@ -291,7 +295,10 @@ def modifier():
             {'id_service': identifiant}
             )
             service = curseur.fetchone()
-          
+
+            if service is None:
+                return abort(404)
+
     categories =[]
     photo_service="images/gratisography.jpg"
 
@@ -315,13 +322,14 @@ def modifier():
             nom_categorie_service=curseur.fetchone()['nom_categorie']
             
             
-    #         for ligne in curseur.fetchall():
-    #             categories.append(ligne['nom_categorie'])
-    
-    #    "SELECT id_categorie FROM categories WHERE nom_categorie = %(nom)s",
-    #                     {'nom': categorie}
-    #                 )
-    #                 id_categorie = curseur.fetchone()['id_categorie']
+            for ligne in curseur.fetchall():
+                categories.append(ligne['nom_categorie'])
+    with bd.creer_connexion() as conn:
+        with conn.get_curseur() as curseur:
+                curseur.execute("SELECT id_categorie FROM categories WHERE nom_categorie = %(nom)s",
+                                    {'nom': categorie}
+                                )
+                id_categorie = curseur.fetchone()['id_categorie']
     erreur_titre = False
     erreur_localisation = False
     erreur_description = False
@@ -346,46 +354,43 @@ def modifier():
         titre=bleach.clean(request.form.get("titre", default="")).strip()
         localisation=bleach.clean(request.form.get("localisation", default="")).strip()
         description=bleach.clean(request.form.get("description", default="")).strip()
-        cout=request.form.get("cout", type=float, default=0.0)
+        cout = request.form.get("cout", default="0").strip()
         st=request.form.get("statut")
         statut = bool(st)
         # categorie=request.form.get("categorie", default="")
 
 
-        # if not titre : 
-        #     abort(400, "Paramètre 'titre' manquant")
-
         #validation du titre
         if not titre or not regex_texte_court.fullmatch(titre):
             erreur_titre = True
             classe_titre="is-invalid"
-            return abort(400)
+            # return abort(400)
             
         else:
             classe_titre="is-valid"
         
-        #validation de la localisation
+        # validation de la localisation
         if not  localisation or not regex_texte_court.fullmatch(localisation):       
             erreur_localisation = True
             classe_localisation="is-invalid"
-            return abort(400)
+            # return abort(400)
         else: 
             classe_localisation="is-valid"
 
-              #Validation du coût
 
+        #Validation du coût
         if not regex_nombre.fullmatch(cout):
-            erreur_cout= True
-            classe_cout="is-invalid"
-            return abort(400)
+            erreur_cout = True
+            classe_cout = "is-invalid"
         else:
-            classe_cout="is-valid"
+            classe_cout = "is-valid"
+            cout = float(cout)
 
         #validation de la description
         if not description or not regex_description.fullmatch(description):
             erreur_description= True
             classe_description="is-invalid"
-            return abort(400)
+            # return abort(400)
         else:
             classe_description="is-valid"
 
@@ -511,8 +516,6 @@ def erreur_interne(erreur):
         code=500,
         message="Nous rencontrons actuellement un problème technique lié à notre base de données. Veuillez réessayer plus tard. Si le problème persiste, contactez l’administrateur du site."
         ), 500
-
-
 
 
 if __name__ == "__main__":

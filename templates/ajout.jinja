@@ -34,7 +34,7 @@
             <label for="description" class="col-sm-2 col-form-label">Description du service : </label>
             <div class="col-sm-6">
                 <textarea type="text" name="description" id="description"
-                    rows="10" class="{{ classe_description }} form-control" required></textarea>
+                    rows="10" class="{{ classe_description }} form-control" required>{{description}}</textarea>
                 <div class="invalid-feedback">La description est invalide.</div>
 
             </div>
@@ -66,9 +66,11 @@
             <label for="categorie" class="form-label">Catégorie : </label>
             <div class="col-sm-6">
                 <select name="categorie" id="categorie" class="{{ classe_categorie }} form-select" required>
-                    <option value="" selected>--Choisir une catégorie--</option>
-                    {% for categ in categories %}
-                    <option value="{{ categ }}"> {{categ}}</option>
+                    <option value=""{% if not categorie %}selected{% endif %}>--Choisir une catégorie--</option>
+                    {% for cat in categories %}
+
+                    <option value="{{ cat }}"{% if cat == categorie %}selected{% endif %}> {{cat}}</option>
+
                     {%endfor%}
                 </select>
                 <div class="invalid-feedback">La catégorie ne doit pas être vide.</div>
