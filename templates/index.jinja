@@ -2,8 +2,19 @@
 
 
 {% block contenu %}
-<h3>{{titre}}</h3>
-{# <h4> Liste de nos cinq récents services enregistrés. </h4> #}
+<h2>{{titre}}</h2>
+{# 
+<div class="scroll-container">
+    <div class="scrolling-text">
+        <span style="font-weight: bold;">Nouveauté ! 5 services fraîchement arrivés - Découvrez-les maintenant !</span>
+    </div>
+</div> #}
+<div class="scroll-container">
+    <div class="scrolling-text">
+        Nouveauté ! 5 services fraîchement arrivés - Découvrez-les maintenant !
+    </div>
+</div>
+
 <table class="table table-striped ">
     <thead>
         <tr>
@@ -17,11 +28,11 @@
     <tbody>
         {% for s in services %}
         <tr class="text-center align-middle">
-            <td><img src="/static/images/gratisography.jpg" alt="Photo du service" width="200" ></td>
-            <td>{{ s.titre }}</td>  
+            <td><img src="/static/images/gratisography.jpg" alt="Photo du service" width="200"></td>
+            <td>{{ s.titre }}</td>
             <td>{{ s.categorie_nom }}</td>
             <td>{{ s.localisation }}</td>
-            <td><a href="/service?id={{ s.id_service }}" class="bouton w-100 w-md-auto">Voir la page</a></td>
+            <td><a href="/service?id={{ s.id_service }}" class="bouton w-100 w-md-auto">Détails du service</a></td>
         </tr>
         {% endfor %}
     </tbody>

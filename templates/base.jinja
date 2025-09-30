@@ -12,6 +12,9 @@
     <link rel="icon" href="https://www.cegepgarneau.ca/favicon.ico" />
     <link rel="stylesheet" href="/static/css/styles.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Playwrite+AU+NSW:wght@100..400&display=swap');
+    </style>
 
 
 </head>
@@ -24,11 +27,11 @@
                     <img src="/static/images/logo.png" alt="logo du site" width="100">
                 </a>
                 <span class="visually-hidden">(Accueil)</span>
-                <h1>DigitalSwap</h1>
+                {# <h1>DigitalSwap</h1> #}
             </div>
             <nav class="navbar navbar-expand-lg ">
                 <div class="container-fluid">
-                    <a class="navbar-brand" href="#">Menu</a>
+                    {# <a class="navbar-brand" href="#">Menu</a> #}
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
@@ -36,10 +39,10 @@
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav">
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="/">Accueil</a>
+                                <a class="nav-link" aria-current="page" href="/">Accueil</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/ajout">Ajouter/modifier un service</a>
+                                <a class="nav-link" href="/ajout">Ajout d'un service</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="/nos-services">Nos services</a>
@@ -62,7 +65,7 @@
         </ul>
     </nav> #}
     <main class="container  pb-3 pt-3">
-        <h2 class="mb-4 mt-3">{%if titre_page%} {{titre_page}} | {%endif%} DigitalSwap </h2>
+        <h1 class="mb-4 mt-3">{%if titre_page%} {{titre_page}} | {%endif%} DigitalSwap </h1>
 
         {% block contenu %}
         {{message_erreur}}
@@ -73,7 +76,7 @@
     </main>
 
     <div class="arriere-plan">
-        <footer class="container  pb-3 pt-3">
+        <footer class="container flex-header pb-3 pt-3">
             <p> Ibtissam Boukdir</p>
             <p>&copy; 2025 DigitalSwap. Tous droits réservés.</p>
         </footer>

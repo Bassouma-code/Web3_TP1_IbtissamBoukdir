@@ -1,8 +1,11 @@
-// Les fichiers sAss n'ont pas de point-virgule ni d'accolade
-// Vous pouvez utiliser des .scss OU .sass à votre choix
 
+// Variables de couleurs
 $couleur-primaire: #4a355b 
 $couleur-secondaire: #e2d6e6
+
+// Variables de polices
+$font-dancing: 'Dancing Script', cursive
+$font-playwrite: 'Playwrite AU NSW', cursive
 
 @import "bootstrap"
 
@@ -11,7 +14,6 @@ $couleur-secondaire: #e2d6e6
 
 body
     margin: 0 auto
-
 
 header
     // @extend .container
@@ -64,3 +66,49 @@ header
     padding: 10px
     border-radius: 10px
     // margin-top: 15px
+
+.nav-link
+    
+    font-family: $font-playwrite
+    background-color: $couleur-primaire
+    transition: all 0.3s, transform 0.2s
+    border-radius: 10px
+    margin: 10px
+    font-size: 1.5rem
+ 
+    &:hover
+        background-color: #fff
+        color:  $couleur-primaire
+
+.scroll-container 
+    width: 100%
+    overflow: hidden
+    background: linear-gradient(135deg, $couleur-secondaire 0%, lighten($couleur-secondaire, 10%) 100%)
+    padding: 15px 0
+    margin: 20px 0
+    border-radius: 8px
+    position: relative
+
+.scrolling-text 
+    display: inline-block
+    padding-left: 100%  // ✅ Démarre hors écran à droite
+    white-space: nowrap
+    animation: scroll 20s linear infinite
+    font-family: $font-playwrite
+    font-size: 1.4rem
+    color: $couleur-primaire
+    font-weight: 700
+    margin: 0
+
+@keyframes scroll
+    0%
+        transform: translateX(0%)
+    100%
+        transform: translateX(-100%)
+
+footer
+    p
+        font-family: $font-playwrite
+        font-weight: 400
+        font-size: 1.1rem
+        margin: 0

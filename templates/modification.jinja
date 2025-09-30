@@ -2,7 +2,7 @@
 
 {% block contenu %}
 
-<form method="post" action="/ajout" novalidate="novalidate">
+<form method="post" action="/modification?id={{id_service}}" novalidate="novalidate">
 
     <fieldset class="border p-4 rounded">
         <legend class="mt-2 w-auto px-2">Détails du service</legend>
@@ -33,8 +33,8 @@
         <div class="mb-3 row">
             <label for="description" class="col-sm-2 col-form-label">Description du service : </label>
             <div class="col-sm-6">
-                <textarea type="text" name="description" id="description"
-                    rows="10" class="{{ classe_description }} form-control" required></textarea>
+                <textarea type="text" name="description" id="description" rows="10"
+                    class="{{ classe_description }} form-control" required>{{description }}</textarea>
                 <div class="invalid-feedback">La description est invalide.</div>
 
             </div>
@@ -52,6 +52,16 @@
 
         </div>
 
+        {# Date de création #}
+        <div class="mb-3 row">
+            <label for="date_creation" class="col-sm-2 col-form-label">Date de création : </label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" name="date_creation" id="date_creation"
+                    value="{{date_creation}}" disabled />
+            </div>
+
+        </div>
+
         {# Statut #}
         <div class="form-check mb-3 row">
             <div class="col-sm-6">
@@ -65,18 +75,13 @@
         <div class="mb-3 row">
             <label for="categorie" class="form-label">Catégorie : </label>
             <div class="col-sm-6">
-                <select name="categorie" id="categorie" class="{{ classe_categorie }} form-select" required>
-                    <option value="" disabled selected>--Choisir une catégorie--</option>
-                    {% for categ in categories %}
-                    <option value="{{ categ }}"> {{categ}}</option>
-                    {%endfor%}
-                </select>
-                <div class="invalid-feedback">La catégorie ne doit pas être vide.</div>
+                <input type="text" value="{{ categorie_service }}" disabled>
+      
             </div>
 
         </div>
 
-        <div >
+        <div>
             <button type="submit" class="btn btn-outline-primary">Soumettre</button>
             <button type="reset" class="btn btn-outline-primary">Réinitialiser</button>
         </div>
