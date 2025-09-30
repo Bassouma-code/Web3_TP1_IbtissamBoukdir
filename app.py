@@ -164,7 +164,8 @@ def ajout():
         titre=bleach.clean(request.form.get("titre", default="")).strip()
         localisation=bleach.clean(request.form.get("localisation", default="")).strip()
         description=bleach.clean(request.form.get("description", default="")).strip()
-        cout=request.form.get("cout", type=float, default=0.0)
+        # cout=request.form.get("cout", type=float, default=0.0)
+        cout = request.form.get("cout", default="0").strip()
         st=request.form.get("statut")
         statut = bool(st)
         categorie=request.form.get("categorie", default="")
@@ -194,13 +195,12 @@ def ajout():
             classe_description="is-valid"
 
         #Validation du coût
-
         if not regex_nombre.fullmatch(cout):
-            erreur_cout= True
-            classe_cout="is-invalid"
-            # return abort(400)
+            erreur_cout = True
+            classe_cout = "is-invalid"
         else:
-            classe_cout="is-valid"
+            classe_cout = "is-valid"
+            cout = float(cout)
 
         #validation de la catégorie
         if not categorie :
@@ -245,10 +245,15 @@ def ajout():
                       
             return redirect("/confirmation", code=303)
         else:
-            # return redirect("/erreur_ajout", code=404)
-     
+
             return render_template('ajout.jinja',titre_page="Ajout d'un service", 
                            categories=categories, 
+                           titre=titre,
+                           localisation=localisation,
+                           description=description,
+                           cout=cout,
+                           statut=statut,
+                           categorie=categorie,                
                            classe_titre=classe_titre,
                            classe_localisation=classe_localisation,
                            classe_description=classe_description,
@@ -257,6 +262,7 @@ def ajout():
   
     return render_template('ajout.jinja',titre_page="Ajout d'un service", 
                            categories=categories, 
+
                            classe_titre=classe_titre,
                            classe_localisation=classe_localisation,
                            classe_description=classe_description,
@@ -265,7 +271,6 @@ def ajout():
 
 @app.route('/modification', methods=["GET", "POST"])
 def modifier():
-
     """Page qui permet de modifier un service"""
 
     identifiant = request.args.get('id', type=int)

@@ -66,7 +66,7 @@
             <label for="categorie" class="form-label">Catégorie : </label>
             <div class="col-sm-6">
                 <select name="categorie" id="categorie" class="{{ classe_categorie }} form-select" required>
-                    <option value="" disabled selected>--Choisir une catégorie--</option>
+                    <option value="" selected>--Choisir une catégorie--</option>
                     {% for categ in categories %}
                     <option value="{{ categ }}"> {{categ}}</option>
                     {%endfor%}
